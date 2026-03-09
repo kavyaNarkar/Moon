@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moon AI Assistant</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Secret Hidden Button -->
+    <div id="hidden-bypass" style="position: fixed; top: 0; left: 0; width: 10px; height: 10px; z-index: 9999; cursor: crosshair; opacity: 0;"></div>
+
+    <!-- Lock Screen -->
+    <div id="lock-screen" class="overlay">
+        <div class="lock-content">
+            <div class="moon-logo-large">🌙</div>
+            <h1>Moon is Locked</h1>
+            
+            <div class="fingerprint-container">
+                <div class="fingerprint-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 12C2 12 5 7 12 7C19 7 22 12 22 12C22 12 19 17 12 17C5 17 2 12 2 12Z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <!-- Fingerprint-like paths -->
+                        <path d="M12 2v2"></path><path d="M12 20v2"></path>
+                        <path d="M4.93 4.93l1.41 1.41"></path><path d="M17.66 17.66l1.41 1.41"></path>
+                        <path d="M2 12h2"></path><path d="M20 12h2"></path>
+                        <path d="M4.93 19.07l1.41-1.41"></path><path d="M17.66 6.34l1.41-1.41"></path>
+                    </svg>
+                    <div class="scan-line"></div>
+                </div>
+            </div>
+            
+            <p id="security-status" class="security-status pulse">Place your finger on the sensor</p>
+        </div>
+    </div>
+
+    <!-- Mode Selection Overlay -->
+    <div id="mode-overlay" class="overlay hidden">
+        <div class="overlay-content">
+            <span class="moon-icon-large">🌙</span>
+            <h2>Welcome to Moon</h2>
+            <p>Select your interaction mode</p>
+            <div class="mode-options">
+                <button id="btn-voice-mode" class="mode-btn">
+                    <span class="btn-icon">🎙️</span>
+                    <div class="btn-text">
+                        <strong>Voice Mode</strong>
+                        <span>Wait for "Hello Moon"</span>
+                    </div>
+                </button>
+                <button id="btn-manual-mode" class="mode-btn">
+                    <span class="btn-icon">⌨️</span>
+                    <div class="btn-text">
+                        <strong>Manual Mode</strong>
+                        <span>Type or Click to speak</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container blurred">
+        <header>
+            <div class="logo">
+                <span class="moon-icon">🌙</span>
+                <h1>Moon</h1>
+            </div>
+            <div class="header-actions">
+                <button id="raagini-btn" class="header-btn raagini-btn" title="Open Raagini Music Player">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 18V5l12-2v13"></path>
+                        <circle cx="6" cy="18" r="3"></circle>
+                        <circle cx="18" cy="16" r="3"></circle>
+                    </svg>
+                </button>
+                <button id="security-btn" class="header-btn security-btn" title="Biometric Settings">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                </button>
+                <button id="mute-btn" class="header-btn" title="Toggle Voice Output">
+                    <svg id="speaker-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                </button>
+                <div class="status">
+                    <span class="status-dot"></span> Online
+                </div>
+            </div>
+        </header>
+
+        <main id="chat-window">
+            <div class="message system">
+                <p>Hello! I am <strong>Moon</strong>. How can I assist you today?</p>
+            </div>
+        </main>
+
+        <footer>
+            <form id="command-form">
+                <button type="button" id="mic-btn" class="mic-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+                </button>
+                <input type="text" id="user-input" placeholder="Type a command..." autocomplete="off">
+                <button type="submit">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
+            </form>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

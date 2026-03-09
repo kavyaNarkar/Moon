@@ -1,0 +1,16 @@
+requests
+vosk
+pypdf
+pyttsx3
+sounddevice
+pyaudio
+pywin32
+ollama
+flask
+flask-cors
+pywebview
+edge-tts
+pygame
+winrt-runtime
+winrt-Windows.Security.Credentials.UI
+winrt-Windows.Foundation
