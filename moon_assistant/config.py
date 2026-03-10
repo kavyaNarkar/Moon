@@ -34,6 +34,9 @@ RAAGINI_PATH = r"C:\Users\User\OneDrive\Apps\Raagini-v1\Raagini\build\windows\x6
 # Web Search
 SEARCH_URL = "https://www.google.com/search?q="
 
+# Default Country Code for WhatsApp (e.g., '91' for India)
+DEFAULT_COUNTRY_CODE = "91"
+
 # Folders
 BASE_DIR = os.getcwd()
 TEMP_DIR = os.path.join(BASE_DIR, "temp")

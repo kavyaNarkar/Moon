@@ -96,15 +96,57 @@ def perform_action(command):
         from ..tools.document_processor import summarize_document
         return summarize_document(command)
 
+    elif task == "add_contact":
+        from ..utils.database import add_contact
+        return add_contact(command.get("name"), command.get("phone"))
+    
+    elif task == "list_contacts":
+        from ..utils.database import list_contacts
+        contacts = list_contacts()
+        if not contacts:
+            return "You have no saved contacts."
+        return "Your contacts:\n" + "\n".join([f"- {name.capitalize()}: {phone}" for name, phone in contacts])
+
+    elif task == "draft_whatsapp":
+        from .brain import query_llm
+        instruction = command.get("instruction", "a professional message")
+        prompt = f"Draft a WhatsApp message based on this instruction: {instruction}. Output only the message text."
+        draft = query_llm(prompt)
+        return f"Here is a draft:\n\n\"{draft}\"\n\nWould you like me to send this? (Say 'send to [name]')"
+
+    elif task == "broadcast_whatsapp":
+        from ..tools.messenger import broadcast_whatsapp
+        recipients = command.get("recipients", [])
+        message = command.get("message", "")
+        logger.info(f"EXECUTOR: Broadcasting WhatsApp message to {recipients}: '{message}'")
+        return broadcast_whatsapp(recipients, message)
+
     elif task == "send_whatsapp":
         from ..tools.messenger import send_whatsapp_message, schedule_whatsapp_message
+        from ..utils.database import get_contact
+        import threading
         phone = command.get("phone", "")
         message = command.get("message", "")
         schedule_time = command.get("schedule_time", "")
         
+        logger.info(f"EXECUTOR: WhatsApp Task - Phone: '{phone}', Message: '{message}'")
+        
+        # Pre-resolve contact name for better feedback
+        display_target = phone
+        if phone and not any(char.isdigit() for char in str(phone)):
+            resolved = get_contact(phone.strip())
+            if resolved:
+                display_target = f"{phone} ({resolved})"
+                logger.info(f"EXECUTOR: Resolved '{phone}' to '{resolved}'")
+            else:
+                logger.warning(f"EXECUTOR: Failed to resolve '{phone}'")
+        
         if schedule_time:
             return schedule_whatsapp_message(phone, message, schedule_time)
-        return send_whatsapp_message(phone, message)
+            
+        # Run in background to avoid GUI timeout
+        threading.Thread(target=send_whatsapp_message, args=(phone, message)).start()
+        return f"Starting WhatsApp process for {display_target}. Please keep the browser in focus."
 
 def execute_task(command):
     """

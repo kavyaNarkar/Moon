@@ -68,46 +68,73 @@ def quick_parse(text):
     
     # 4. WhatsApp Messaging
     whatsapp_variants = ["whatsapp", "whatssapp", "watsapp", "watsap", "messenger"]
-    if any(v in text for v in whatsapp_variants) and ("send" in text or "message" in text):
+    if any(v in text for v in whatsapp_variants):
         import re
+        import dateparser
         
-        # 1. Try to extract phone number (sequence of 10+ digits)
-        phone_match = re.search(r'(\d{10,15})', text)
-        phone = phone_match.group(1) if phone_match else ""
+        # Check for contact management
+        if "save" in text or "add" in text:
+            match = re.search(r'(?:save|add) (.*?) (?:with|as) (\d{10,15})', text)
+            if match:
+                return {"task": "add_contact", "name": match.group(1).strip(), "phone": match.group(2)}
         
-        # 2. Try to extract quoted message or message after keywords
+        if "list" in text and "contact" in text:
+            return {"task": "list_contacts"}
+
+        # Check for AI Drafting
+        if "draft" in text:
+            return {"task": "draft_whatsapp", "instruction": text.replace("draft", "").replace("whatsapp", "").strip()}
+
+        # Bulletproof WhatsApp Extraction
+        phone = ""
         message = ""
-        # Look for quotes first
+        schedule_time = ""
+        
+        # 1. Target (Name or Phone)
+        # Look for "to [Target]"
+        to_match = re.search(r'\bto\b\s+(?:\[|")?([a-zA-Z0-9]+)(?:\]|")?', text, re.IGNORECASE)
+        if to_match:
+            phone = to_match.group(1).strip()
+        else:
+            # Fallback: look for 10-digit number
+            num_match = re.search(r'(\d{10,15})', text)
+            if num_match:
+                phone = num_match.group(1)
+            else:
+                # Fallback: name after 'send' or 'message'
+                name_match = re.search(r'(?:send|message)(?:\s+whatsapp)?\s+(?:to\s+)?([a-zA-Z]+)', text, re.IGNORECASE)
+                if name_match and name_match.group(1).lower() not in whatsapp_variants:
+                    phone = name_match.group(1).strip()
+
+        # 2. Message Content
+        # Priority: literal quotes/brackets
         quote_match = re.search(r'["\'\[](.*?)["\'\]]', text)
         if quote_match:
             message = quote_match.group(1).strip()
         else:
-            # Fallback to splitting by common keywords
-            potential_msg = text
-            # Remove phone from search for message
-            if phone:
-                potential_msg = text.replace(phone, "").replace("to", "").strip()
-            
-            # Remove "send", "whatsapp", etc.
-            for v in whatsapp_variants + ["send", "message"]:
-                potential_msg = potential_msg.replace(v, "")
-            
-            message = potential_msg.strip()
-            
-        # 3. Schedule Time extraction (e.g., "at 5pm", "at 18:30", "tomorrow at 10:00")
-        schedule_time = ""
-        # Match "at 5:30", "at 18:00", "at 5pm"
-        time_match = re.search(r'at (\d{1,2}(?::\d{2})?\s*(?:am|pm)?)', text)
-        if time_match:
-            schedule_time = time_match.group(1).strip()
-        
-        # Fallback to "HH:MM" anywhere if no "at"
-        if not schedule_time:
-            full_time_match = re.search(r'(\d{1,2}:\d{2})', text)
-            if full_time_match:
-                schedule_time = full_time_match.group(1)
+            # Take everything that isn't the phone or keywords
+            clean_text = text
+            if phone: clean_text = clean_text.replace(phone.lower(), "", 1)
+            for v in whatsapp_variants + ["send", "to", "message", "whatsapp", "at"]:
+                clean_text = re.sub(rf'\b{v}\b', '', clean_text, flags=re.IGNORECASE)
+            message = clean_text.strip()
 
-        if message or phone:
+        # 3. Schedule Time
+        time_parts = text.split("at")
+        if len(time_parts) > 1:
+            possible_time = time_parts[-1].strip()
+            parsed = dateparser.parse(possible_time, settings={'PREFER_DATES_FROM': 'future'})
+            if parsed:
+                schedule_time = possible_time
+                # Remove time from message if it leaked in
+                message = message.replace(f"at {possible_time}", "").replace(possible_time, "").strip()
+
+        if "broadcast" in text:
+            recipients = re.findall(r'(\d{10,15})', text)
+            return {"task": "broadcast_whatsapp", "recipients": recipients, "message": message}
+            
+        if phone or message:
+            logger.info(f"PARSER: Extracted WhatsApp -> Target: '{phone}', Message: '{message}', Sched: '{schedule_time}'")
             return {
                 "task": "send_whatsapp", 
                 "phone": phone, 

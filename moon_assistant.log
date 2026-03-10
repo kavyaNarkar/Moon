@@ -1675,3 +1675,133 @@ python -m moon_assistant.diagnose_ollama
 2026-03-10 21:16:03,782 - Moon - INFO - Opening Brave with WhatsApp: https://web.whatsapp.com/send?phone=9920883511&text=hello%20moon
 2026-03-10 21:16:03,789 - Moon - INFO - Waiting for WhatsApp Web to load and focus...
 2026-03-10 21:16:26,101 - Moon - INFO - Sent focus Tab + double Enter sequence.
+2026-03-10 21:23:36,848 - Moon - INFO - Database initialized successfully.
+2026-03-10 21:23:37,262 - Moon - INFO - Starting background WhatsApp scheduler service.
+2026-03-10 21:25:19,794 - Moon - INFO - GUI Command: Hi send whatsapp message "hello moon" to [9920883511] (Muted: False)
+2026-03-10 21:25:22,568 - Moon - INFO - Generating Natural Voice: Sending WhatsApp message to 9920883511....
+2026-03-10 21:25:22,732 - Moon - INFO - Database initialized successfully.
+2026-03-10 21:25:22,733 - Moon - INFO - Starting background WhatsApp scheduler service.
+2026-03-10 21:25:22,733 - Moon - INFO - Opening Brave with WhatsApp: https://web.whatsapp.com/send?phone=9920883511&text=hello%20moon
+2026-03-10 21:25:22,742 - Moon - INFO - Waiting for WhatsApp Web to load...
+2026-03-10 21:25:47,059 - Moon - INFO - Sent message sequence.
+2026-03-10 21:25:52,742 - Moon - INFO - Triggering scheduled message 1
+2026-03-10 21:25:52,744 - Moon - INFO - Resolved contact 'testfriend' to 1234567890
+2026-03-10 21:25:52,744 - Moon - INFO - Opening Brave with WhatsApp: https://web.whatsapp.com/send?phone=1234567890&text=Timed%20Message
+2026-03-10 21:25:52,752 - Moon - INFO - Waiting for WhatsApp Web to load...
+2026-03-10 21:26:17,066 - Moon - INFO - Sent message sequence.
+2026-03-10 21:28:19,907 - Moon - INFO - GUI Command: send whatsapp message "hello moon" to [9920883511] (Muted: False)
+2026-03-10 21:28:23,606 - Moon - INFO - Generating Natural Voice: Sending WhatsApp message to 9920883511....
+2026-03-10 21:28:23,858 - Moon - INFO - Database initialized successfully.
+2026-03-10 21:28:23,859 - Moon - INFO - Starting background WhatsApp scheduler service.
+2026-03-10 21:28:47,460 - Moon - INFO - GUI Command: HII (Muted: False)
+2026-03-10 21:28:47,469 - Moon - INFO - Generating Natural Voice: Hello! I'm Moon, your AI assistant. How can I help...
+2026-03-10 21:28:57,540 - Moon - INFO - GUI Command: send whatsapp message "hello moon" to [9920883511] (Muted: False)
+2026-03-10 21:28:57,605 - Moon - INFO - Generating Natural Voice: Sending WhatsApp message to 9920883511....
+2026-03-10 21:29:37,048 - Moon - INFO - GUI Command: send whatsapp message "hello moon" to [9920883511] (Muted: False)
+2026-03-10 21:29:42,687 - Moon - INFO - Generating Natural Voice: Sending WhatsApp message to 9920883511....
+2026-03-10 21:29:43,081 - Moon - INFO - Database initialized successfully.
+2026-03-10 21:29:43,083 - Moon - INFO - Starting background WhatsApp scheduler service.
+2026-03-10 21:29:43,083 - Moon - INFO - Prepending default country code 91 to 9920883511
+2026-03-10 21:29:43,084 - Moon - INFO - Opening Brave with WhatsApp: https://web.whatsapp.com/send?phone=919920883511&text=hello%20moon
+2026-03-10 21:29:43,098 - Moon - INFO - Waiting for WhatsApp Web to load...
+2026-03-10 21:30:07,431 - Moon - INFO - Sent message sequence.
+2026-03-10 21:34:57,438 - Moon - INFO - Database initialized successfully.
+2026-03-10 21:35:48,779 - Moon - INFO - GUI Command: send whatsapp message "hello moon" to [self] (Muted: False)
+2026-03-10 21:35:55,990 - Moon - INFO - Generating Natural Voice: Sending WhatsApp message to someone....
+2026-03-10 21:35:56,385 - Moon - INFO - Starting background WhatsApp scheduler service.
+2026-03-10 21:35:56,386 - Moon - INFO - Opening Brave with WhatsApp: https://web.whatsapp.com/send?text=hello%20moon
+2026-03-10 21:35:56,401 - Moon - INFO - Waiting for WhatsApp Web to load...
+2026-03-10 21:36:21,818 - Moon - INFO - Sent robust message sequence.
+2026-03-10 21:39:27,041 - Moon - INFO - Database initialized successfully.
+2026-03-10 21:39:41,133 - Moon - INFO - GUI Command: send whatsapp message "hello moon" to [self] (Muted: False)
+2026-03-10 21:39:44,046 - Moon - INFO - Generating Natural Voice: Sending WhatsApp message to someone....
+2026-03-10 21:39:44,221 - Moon - INFO - Starting background WhatsApp scheduler service.
+2026-03-10 21:39:44,221 - Moon - INFO - Opening Brave with WhatsApp: https://web.whatsapp.com/send/?text=hello%20moon
+2026-03-10 21:39:44,234 - Moon - INFO - Waiting for WhatsApp Web to load...
+2026-03-10 21:40:11,479 - Moon - INFO - GUI Command: send whatsapp message "hello moon" to [phone number] (Muted: False)
+2026-03-10 21:40:11,553 - Moon - INFO - Sent direct Enter sequence.
+2026-03-10 21:40:11,566 - Moon - INFO - Generating Natural Voice: Sending WhatsApp message to someone....
+2026-03-10 21:40:11,566 - Moon - INFO - Opening Brave with WhatsApp: https://web.whatsapp.com/send/?text=hello%20moon
+2026-03-10 21:40:11,581 - Moon - INFO - Waiting for WhatsApp Web to load...
+2026-03-10 21:40:25,369 - Moon - INFO - GUI Command: send whatsapp message "hello moon" to [9920883511] (Muted: False)
+2026-03-10 21:40:25,428 - Moon - INFO - Prepending default country code 91 to 9920883511
+2026-03-10 21:40:25,428 - Moon - INFO - Generating Natural Voice: Sending WhatsApp message to 9920883511....
+2026-03-10 21:40:25,429 - Moon - INFO - Opening Brave with WhatsApp: https://web.whatsapp.com/send/?phone=919920883511&text=hello%20moon
+2026-03-10 21:40:25,433 - Moon - INFO - Waiting for WhatsApp Web to load...
+2026-03-10 21:40:38,897 - Moon - INFO - Sent direct Enter sequence.
+2026-03-10 21:40:52,746 - Moon - INFO - Sent direct Enter sequence.
+2026-03-10 21:43:30,040 - Moon - INFO - Database initialized successfully.
+2026-03-10 21:43:44,236 - Moon - INFO - GUI Command: send whatsapp message "hello moon" to [Self] (Muted: False)
+2026-03-10 21:43:47,102 - Moon - INFO - Generating Natural Voice: Sending WhatsApp message to someone....
+2026-03-10 21:43:47,268 - Moon - INFO - Starting background WhatsApp scheduler service.
+2026-03-10 21:43:47,268 - Moon - INFO - Opening Brave with WhatsApp: https://web.whatsapp.com/send/?text=hello%20moon
+2026-03-10 21:43:47,271 - Moon - INFO - Waiting for WhatsApp Web to load...
+2026-03-10 21:44:14,585 - Moon - INFO - Sent direct Enter sequence.
+2026-03-10 21:44:23,063 - Moon - INFO - GUI Command: send whatsapp message "hello moon" to [self] (Muted: False)
+2026-03-10 21:44:23,102 - Moon - INFO - Generating Natural Voice: Sending WhatsApp message to someone....
+2026-03-10 21:44:23,104 - Moon - INFO - Opening Brave with WhatsApp: https://web.whatsapp.com/send/?text=hello%20moon
+2026-03-10 21:44:23,116 - Moon - INFO - Waiting for WhatsApp Web to load...
+2026-03-10 21:44:50,430 - Moon - INFO - Sent direct Enter sequence.
+2026-03-10 21:46:45,316 - Moon - INFO - GUI Command: send whatsapp message "hello moon" to [Self] (Muted: False)
+2026-03-10 21:46:51,632 - Moon - INFO - Generating Natural Voice: Sending WhatsApp message to someone....
+2026-03-10 21:46:52,029 - Moon - INFO - Database initialized successfully.
+2026-03-10 21:46:52,030 - Moon - INFO - Starting background WhatsApp scheduler service.
+2026-03-10 21:46:52,031 - Moon - WARNING - No phone number provided or resolved. WhatsApp will open contact selection.
+2026-03-10 21:46:52,031 - Moon - INFO - Opening Brave with WhatsApp: https://web.whatsapp.com/send?text=hello%20moon
+2026-03-10 21:46:52,044 - Moon - INFO - Waiting for WhatsApp Web to load...
+2026-03-10 21:47:19,360 - Moon - INFO - Sent direct Enter sequence.
+2026-03-10 21:49:32,241 - Moon - INFO - GUI Command: send whatsapp message "hello moon" to [Self] (Muted: False)
+2026-03-10 21:49:37,561 - Moon - INFO - Generating Natural Voice: Sending WhatsApp message to someone....
+2026-03-10 21:51:21,408 - Moon - INFO - GUI Command: send whatsapp message "hello moon" to [Self] (Muted: False)
+2026-03-10 21:51:25,726 - Moon - INFO - Generating Natural Voice: Sending WhatsApp message to someone....
+2026-03-10 21:51:26,107 - Moon - INFO - Database initialized successfully.
+2026-03-10 21:51:26,109 - Moon - INFO - Starting background WhatsApp scheduler service.
+2026-03-10 21:51:26,109 - Moon - INFO - Opening WhatsApp with URL: https://web.whatsapp.com/send?text=hello%20moon
+2026-03-10 21:51:26,123 - Moon - INFO - Waiting for WhatsApp Web UI to stabilize...
+2026-03-10 21:51:55,440 - Moon - INFO - Executed robust Esc -> Enter -> Enter sequence.
+2026-03-10 22:11:02,046 - Moon - INFO - Database initialized successfully.
+2026-03-10 22:12:14,703 - Moon - INFO - GUI Command: send whatsapp message "hello moon" to [Self] (Muted: False)
+2026-03-10 22:12:19,977 - Moon - INFO - Generating Natural Voice: Sending WhatsApp message to someone....
+2026-03-10 22:12:20,297 - Moon - INFO - Database initialized successfully.
+2026-03-10 22:12:20,300 - Moon - INFO - Starting background WhatsApp scheduler service.
+2026-03-10 22:12:20,303 - Moon - INFO - Opening WhatsApp with URL: https://web.whatsapp.com/send?text=hello%20moon
+2026-03-10 22:12:20,323 - Moon - INFO - Waiting for WhatsApp Web UI to stabilize...
+2026-03-10 22:12:49,639 - Moon - INFO - Executed robust Esc -> Enter -> Enter sequence.
+2026-03-10 22:25:18,994 - Moon - INFO - GUI Command: send whatsapp message "hello moon" to [Self] (Muted: False)
+2026-03-10 22:25:26,516 - Moon - INFO - Generating Natural Voice: Sending WhatsApp message to someone....
+2026-03-10 22:25:26,888 - Moon - INFO - Database initialized successfully.
+2026-03-10 22:25:26,888 - Moon - INFO - Starting background WhatsApp scheduler service.
+2026-03-10 22:25:26,892 - Moon - INFO - Opening WhatsApp with URL: https://web.whatsapp.com/send?text=hello%20moon
+2026-03-10 22:25:26,928 - Moon - INFO - Waiting for WhatsApp Web UI to stabilize...
+2026-03-10 22:25:56,253 - Moon - INFO - Executed robust Esc -> Enter -> Enter sequence.
+2026-03-10 22:30:09,397 - Moon - INFO - GUI Command: send whatsapp message "hello moon" to [Self] (Muted: False)
+2026-03-10 22:30:12,200 - Moon - INFO - Generating Natural Voice: Sending WhatsApp message to someone....
+2026-03-10 22:30:12,368 - Moon - INFO - Database initialized successfully.
+2026-03-10 22:30:12,369 - Moon - INFO - Starting background WhatsApp scheduler service.
+2026-03-10 22:30:12,373 - Moon - INFO - Opening WhatsApp with URL: https://web.whatsapp.com/send?text=hello%20moon
+2026-03-10 22:30:12,384 - Moon - INFO - Waiting for WhatsApp Web UI to stabilize...
+2026-03-10 22:30:37,385 - Moon - INFO - Executing robust Esc -> Enter -> Enter sequence...
+2026-03-10 22:30:41,699 - Moon - INFO - WhatsApp send sequence completed.
+2026-03-10 22:33:16,625 - Moon - INFO - GUI Command: send whatsapp message "hello moon" to [Self] (Muted: False)
+2026-03-10 22:33:21,128 - Moon - INFO - Generating Natural Voice: Sending WhatsApp message to someone....
+2026-03-10 22:33:21,823 - Moon - INFO - Database initialized successfully.
+2026-03-10 22:33:21,824 - Moon - INFO - Starting background WhatsApp scheduler service.
+2026-03-10 22:33:21,826 - Moon - INFO - Opening WhatsApp with URL: https://web.whatsapp.com/send?text=hello%20moon
+2026-03-10 22:33:21,856 - Moon - INFO - Waiting for WhatsApp Web UI to stabilize (30s)...
+2026-03-10 22:33:51,859 - Moon - INFO - Executing expanded robust Esc -> Enter -> Enter sequence...
+2026-03-10 22:33:59,487 - Moon - INFO - WhatsApp send sequence completed.
+2026-03-10 22:38:25,270 - Moon - INFO - GUI Command: send whatsapp message "hello moon" to [Self] (Muted: False)
+2026-03-10 22:38:32,843 - Moon - INFO - PARSER: Extracted WhatsApp -> Target: 'self', Message: 'hello moon', Sched: ''
+2026-03-10 22:38:32,846 - Moon - INFO - Generating Natural Voice: Sending WhatsApp message to self....
+2026-03-10 22:38:33,100 - Moon - INFO - Database initialized successfully.
+2026-03-10 22:38:33,101 - Moon - INFO - Starting background WhatsApp scheduler service.
+2026-03-10 22:38:33,102 - Moon - INFO - EXECUTOR: WhatsApp Task - Phone: 'self', Message: 'hello moon'
+2026-03-10 22:38:33,103 - Moon - INFO - EXECUTOR: Resolved 'self' to '9920883511'
+2026-03-10 22:38:33,106 - Moon - INFO - MESSENGER: Request - Phone: 'self', Message Snippet: 'hello moon...'
+2026-03-10 22:38:33,109 - Moon - INFO - MESSENGER: Resolving contact name: 'self'
+2026-03-10 22:38:33,114 - Moon - INFO - MESSENGER: Resolved 'self' to '9920883511'
+2026-03-10 22:38:33,116 - Moon - INFO - MESSENGER: Prepending 91
+2026-03-10 22:38:33,117 - Moon - INFO - MESSENGER: Final URL - https://api.whatsapp.com/send?phone=919920883511&text=hello%20moon
+2026-03-10 22:38:33,132 - Moon - INFO - MESSENGER: Waiting 30s for WhatsApp Web UI...
+2026-03-10 22:39:03,143 - Moon - INFO - MESSENGER: Executing expanded robust Esc -> Enter -> Enter sequence...
+2026-03-10 22:39:11,775 - Moon - INFO - MESSENGER: WhatsApp combined send sequence completed.

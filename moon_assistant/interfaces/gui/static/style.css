@@ -582,3 +582,81 @@ body.compact-mode .mic-btn {
     width: 32px;
     height: 32px;
 }
+
+/* Contact Modal & List */
+.contact-content {
+    max-width: 600px !important;
+    padding: 30px !important;
+}
+
+#contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+#contact-form input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 12px 15px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.modal-actions button {
+    flex: 1;
+    width: auto;
+    border-radius: 12px;
+}
+
+.save-btn {
+    background: var(--accent-color);
+    color: #2e3440;
+}
+
+.cancel-btn {
+    background: rgba(191, 97, 106, 0.2);
+    color: #bf616a;
+    border: 1px solid rgba(191, 97, 106, 0.3);
+}
+
+.contacts-list {
+    max-height: 250px;
+    overflow-y: auto;
+    margin-top: 20px;
+    text-align: left;
+}
+
+.contacts-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.contact-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.contact-info strong {
+    color: var(--accent-color);
+    display: block;
+    font-size: 14px;
+}
+
+.contact-info span {
+    font-size: 16px;
+    color: var(--text-primary);
+}

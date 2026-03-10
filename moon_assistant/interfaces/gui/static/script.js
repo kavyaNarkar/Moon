@@ -187,6 +187,80 @@ if (securityBtn) {
     });
 }
 
+// Contact Management
+const contactBtn = document.getElementById('contacts-btn');
+const contactModal = document.getElementById('contact-modal');
+const closeContactModal = document.getElementById('close-contact-modal');
+const contactForm = document.getElementById('contact-form');
+const contactsList = document.getElementById('contacts-list');
+
+if (contactBtn) {
+    contactBtn.addEventListener('click', () => {
+        contactModal.classList.remove('hidden');
+        loadContacts();
+    });
+}
+
+if (closeContactModal) {
+    closeContactModal.addEventListener('click', () => {
+        contactModal.classList.add('hidden');
+    });
+}
+
+async function loadContacts() {
+    try {
+        const response = await fetch('/api/contacts/list');
+        const data = await response.json();
+        if (data.status === 'success') {
+            renderContacts(data.contacts);
+        }
+    } catch (err) {
+        console.error("Failed to load contacts", err);
+    }
+}
+
+function renderContacts(contacts) {
+    contactsList.innerHTML = contacts.length ? '' : '<p style="text-align:center; opacity:0.5;">No contacts saved yet.</p>';
+    contacts.forEach(([name, phone]) => {
+        const item = document.createElement('div');
+        item.className = 'contact-item';
+        item.innerHTML = `
+            <div class="contact-info">
+                <strong>${name.charAt(0).toUpperCase() + name.slice(1)}</strong>
+                <span>${phone}</span>
+            </div>
+        `;
+        contactsList.appendChild(item);
+    });
+}
+
+if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('contact-name').value;
+        const phone = document.getElementById('contact-phone').value;
+        
+        try {
+            const response = await fetch('/api/contacts/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, phone })
+            });
+            const data = await response.json();
+            if (data.status === 'success') {
+                document.getElementById('contact-name').value = '';
+                document.getElementById('contact-phone').value = '';
+                loadContacts();
+                appendMessage('system', `Contact <strong>${name}</strong> saved.`);
+            } else {
+                alert("Error: " + data.message);
+            }
+        } catch (err) {
+            console.error("Save contact error:", err);
+        }
+    });
+}
+
 // Text interaction
 commandForm.addEventListener('submit', async (e) => {
     e.preventDefault();

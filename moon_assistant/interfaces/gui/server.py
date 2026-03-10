@@ -21,6 +21,24 @@ def index():
 def serve_static(path):
     return send_from_directory(STATIC_DIR, path)
 
+@app.route('/api/contacts/add', methods=['POST'])
+def gui_add_contact():
+    data = request.json
+    name = data.get('name')
+    phone = data.get('phone')
+    if not name or not phone:
+        return jsonify({"status": "error", "message": "Missing name or phone"})
+    
+    from ...utils.database import add_contact
+    result = add_contact(name, phone)
+    return jsonify({"status": "success", "message": result})
+
+@app.route('/api/contacts/list', methods=['GET'])
+def gui_list_contacts():
+    from ...utils.database import list_contacts
+    contacts = list_contacts()
+    return jsonify({"status": "success", "contacts": contacts})
+
 @app.route('/api/command', methods=['POST'])
 def handle_command():
     from ...interfaces.voice_output import speak

@@ -67,6 +67,25 @@
         </div>
     </div>
     
+    <!-- Contact Management Modal -->
+    <div id="contact-modal" class="overlay hidden">
+        <div class="overlay-content contact-content">
+            <span class="moon-icon-large">👥</span>
+            <h2>Manage Contacts</h2>
+            <form id="contact-form">
+                <input type="text" id="contact-name" placeholder="Contact Name (e.g. Mom)" required>
+                <input type="text" id="contact-phone" placeholder="Phone Number (10 digits)" required>
+                <div class="modal-actions">
+                    <button type="submit" class="save-btn">Save Contact</button>
+                    <button type="button" id="close-contact-modal" class="cancel-btn">Close</button>
+                </div>
+            </form>
+            <div id="contacts-list" class="contacts-list">
+                <!-- Contacts will be loaded here -->
+            </div>
+        </div>
+    </div>
+    
     <div class="container blurred">
         <header>
             <div class="logo">
@@ -79,6 +98,14 @@
                         <path d="M9 18V5l12-2v13"></path>
                         <circle cx="6" cy="18" r="3"></circle>
                         <circle cx="18" cy="16" r="3"></circle>
+                    </svg>
+                </button>
+                <button id="contacts-btn" class="header-btn contacts-btn" title="Manage WhatsApp Contacts">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                     </svg>
                 </button>
                 <button id="security-btn" class="header-btn security-btn" title="Biometric Settings">
