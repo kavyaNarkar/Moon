@@ -39,13 +39,26 @@ def get_response_text(command):
     elif task in ["chat", "welcome_message", "respond"]:
         return command.get("message", "I'm here to help!")
     
-    elif task == "send_whatsapp":
-        phone = command.get("phone", "")
-        message = command.get("message", "")
-        schedule_time = command.get("schedule_time", "")
-        if schedule_time:
-            return f"Scheduling WhatsApp message to {phone if phone else 'someone'} at {schedule_time}."
         return f"Sending WhatsApp message to {phone if phone else 'someone'}."
+
+    elif task == "web_summarize":
+        query = command.get("query", "")
+        return f"Searching the web and summarizing information about {query}..."
+        
+    elif task == "web_news":
+        topic = command.get("topic", "world news")
+        return f"Fetching the latest news about {topic}..."
+
+    elif task == "index_files":
+        path = command.get("path", "")
+        return f"Indexing files from {path} into my knowledge sphere..."
+        
+    elif task == "search_files":
+        query = command.get("query", "")
+        return f"Searching my knowledge sphere for '{query}'..."
+
+    elif task == "system_stats":
+        return "Checking your system performance metrics..."
 
     elif task == "help":
         return "Here is the help information."
@@ -147,6 +160,56 @@ def perform_action(command):
         # Run in background to avoid GUI timeout
         threading.Thread(target=send_whatsapp_message, args=(phone, message)).start()
         return f"Starting WhatsApp process for {display_target}. Please keep the browser in focus."
+
+    elif task == "web_summarize":
+        from ..tools.web_intelligence import search_and_summarize
+        return search_and_summarize(command.get("query", ""))
+        
+    elif task == "web_news":
+        from ..tools.web_intelligence import get_latest_news
+        return get_latest_news(command.get("topic", "world news"))
+    elif task == "system_stats":
+        import psutil
+        cpu = psutil.cpu_percent(interval=0.1)
+        mem = psutil.virtual_memory()
+        bat = psutil.sensors_battery()
+        
+        status = f"Your CPU is currently at {cpu} percent usage. "
+        status += f"You are using {round(mem.used / (1024**3), 1)} GB of your {round(mem.total / (1024**3), 1)} GB RAM. "
+        if bat:
+            status += f"Battery is at {bat.percent} percent and is {'charging' if bat.power_plugged else 'discharging'}."
+        else:
+            status += "Battery information is unavailable."
+        return status
+
+    elif task == "index_files":
+        from ..tools.knowledge_base import index_directory, index_file
+        path = command.get("path", "")
+        if os.path.isdir(path):
+            count = index_directory(path)
+            return f"Successfully indexed {count} files from {path}."
+        elif os.path.isfile(path):
+            if index_file(path):
+                return f"Successfully indexed {path}."
+            return f"Failed to index {path}. Unsupported format or unreadable."
+        return f"Invalid path: {path}"
+        
+    elif task == "search_files":
+        from ..tools.knowledge_base import search_knowledge
+        from .brain import query_llm
+        query = command.get("query", "")
+        context_chunks = search_knowledge(query)
+        
+        if not context_chunks:
+            return "I couldn't find any relevant information in your local files."
+            
+        combined_context = "\n\n".join(context_chunks)
+        prompt = (
+            f"You are Moon AI. Use the following context from the user's local files to answer their question. "
+            f"If the answer isn't in the context, say you don't know based on the files provided.\n\n"
+            f"Context:\n{combined_context}\n\nQuestion: {query}"
+        )
+        return query_llm(prompt)
 
 def execute_task(command):
     """

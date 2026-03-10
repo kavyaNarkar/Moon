@@ -1,5 +1,6 @@
 import os
 import asyncio
+from winrt.windows.security.credentials.ui import UserConsentVerifier, UserConsentVerificationResult
 from ..utils.logger import logger
 
 class SecurityManager:
@@ -19,31 +20,39 @@ class SecurityManager:
 
     def verify_fingerprint(self):
         """
-        Uses Windows Biometric Framework (Windows Hello) to verify the user.
-        This triggers the native Windows security prompt.
+        Uses a separate process helper to bypass COM/event-loop conflicts 
+        between Flask threads and WinRT UI calls.
         """
+        import subprocess
+        import sys
+        
+        logger.info("SECURITY: verify_fingerprint triggering separate process...")
         try:
-            from winrt.windows.security.credentials.ui import UserConsentVerifier, UserConsentVerificationResult
+            # Get path to helper script
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            helper_path = os.path.join(os.path.dirname(current_dir), "utils", "biometric_helper.py")
             
-            # request_verification_async is an awaitable object in winrt
-            async def get_consent():
-                result = await UserConsentVerifier.request_verification_async("Verify your identity to unlock Moon Assistant.")
-                return result
-
-            # Run the async winrt call synchronously for the Flask endpoint
-            result = asyncio.run(get_consent())
-
-            if result == UserConsentVerificationResult.VERIFIED:
-                return True, "Fingerprint Recognized."
-            elif result == UserConsentVerificationResult.CANCELED:
-                return False, "Verification Canceled."
+            # Use current python executable to run helper
+            # This is significantly more robust than calling winrt inside a flask thread
+            process = subprocess.run([sys.executable, helper_path], capture_output=False, timeout=60)
+            
+            logger.info(f"SECURITY: Helper process exited with code: {process.returncode}")
+            
+            if process.returncode == 0:
+                logger.info("SECURITY: Biometric Verification SUCCESS.")
+                return True, "Verified"
+            elif process.returncode == 1:
+                logger.warning("SECURITY: Biometric Verification CANCELED.")
+                return False, "Canceled"
             else:
-                return False, f"Verification failed: {result.name}"
+                logger.error(f"SECURITY: Biometric Verification FAILED (Code {process.returncode}).")
+                return False, "Failed"
                 
+        except subprocess.TimeoutExpired:
+            logger.error("SECURITY: Biometric verification timed out.")
+            return False, "Timed Out"
         except Exception as e:
-            logger.error(f"Hardware Fingerprint Error: {e}")
-            # Fallback to simulated success ONLY if hardware/drivers are missing 
-            # and it's a dev environment, but for the user we should report the error.
-            return False, f"Biometric error: {str(e)}"
+            logger.error(f"SECURITY: Subprocess error - {e}")
+            return False, "Scanner Error"
 
 security_manager = SecurityManager()

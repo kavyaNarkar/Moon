@@ -61,52 +61,74 @@ if (raaginiBtn) {
     });
 }
 
-async function startVoiceLifecycle() {
-    while (true) {
-        try {
-            // Wait for Wake Word
-            const response = await fetch('/api/wake_word', { method: 'POST' });
-            const data = await response.json();
-            
-            if (data.status === 'detected') {
-                await triggerVoiceCommand();
-            }
-        } catch (e) {
-            console.error("Voice lifecycle error", e);
-            break;
-        }
-    }
+// Web Speech API Initialization
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition;
+
+if (SpeechRecognition) {
+    recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.lang = 'en-IN'; // Default to Indian English for better matching
+    recognition.interimResults = false;
+
+    recognition.onstart = () => {
+        micBtn.classList.add('listening');
+        userInput.placeholder = "Listening...";
+    };
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        userInput.value = transcript;
+        sendInputCommand(transcript);
+    };
+
+    recognition.onerror = (event) => {
+        console.error("Speech Recognition Error", event.error);
+        micBtn.classList.remove('listening');
+        userInput.placeholder = "Try again...";
+    };
+
+    recognition.onend = () => {
+        micBtn.classList.remove('listening');
+        userInput.placeholder = "Say 'Hello Moon' or type a command...";
+    };
 }
 
 async function triggerVoiceCommand() {
-    micBtn.classList.add('listening');
-    const thinkingId = 'thinking-' + Date.now();
-    appendMessage('system', '<i>Listening...</i>', thinkingId);
-    
-    try {
-        const response = await fetch('/api/voice', { 
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ mute: isMuted })
-        });
-        const data = await response.json();
-        
-        if (document.getElementById(thinkingId)) document.getElementById(thinkingId).remove();
-        
-        if (data.user_text) appendMessage('user', data.user_text);
-        if (data.response) appendMessage('system', data.response);
-    } catch (error) {
-        console.error('Error:', error);
-        if (document.getElementById(thinkingId)) document.getElementById(thinkingId).innerHTML = "Error processing voice.";
-    } finally {
-        micBtn.classList.remove('listening');
+    if (recognition) {
+        try {
+            recognition.start();
+        } catch (e) {
+            recognition.stop();
+        }
+    } else {
+        alert("Speech Recognition is not supported in this browser.");
     }
 }
 
 // Voice interaction (Manual)
-micBtn.addEventListener('click', async () => {
-    await triggerVoiceCommand();
+micBtn.addEventListener('click', () => {
+    triggerVoiceCommand();
 });
+
+async function speakResponse(text) {
+    if (isMuted) return;
+    
+    try {
+        const response = await fetch('/api/voice/speak', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: text })
+        });
+        const data = await response.json();
+        if (data.status === 'success') {
+            const audio = new Audio(data.url);
+            audio.play();
+        }
+    } catch (err) {
+        console.error("TTS Playback Error", err);
+    }
+}
 
 // Security State Management
 const lockScreen = document.getElementById('lock-screen');
@@ -139,30 +161,43 @@ hiddenBypass.addEventListener('click', async () => {
 
 // Fingerprint Simulation Logic
 fingerprintIcon.addEventListener('click', async () => {
-    securityStatus.innerText = "Scanning Fingerprint...";
+    if (fingerprintIcon.classList.contains('scanning')) return;
+    
+    securityStatus.innerText = "AUTHENTICATING...";
+    securityStatus.style.color = "var(--primary)";
+    fingerprintIcon.classList.remove('error', 'success');
     fingerprintIcon.classList.add('scanning');
     
-    // Simulate a short delay for scanning effect
-    setTimeout(async () => {
-        try {
-            const response = await fetch('/api/security/verify', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ mode: 'fingerprint' })
-            });
-            const data = await response.json();
+    try {
+        const response = await fetch('/api/security/verify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ mode: 'fingerprint' })
+        });
+        const data = await response.json();
+        
+        fingerprintIcon.classList.remove('scanning');
+        
+        if (data.status === 'unlocked') {
+            fingerprintIcon.classList.add('success');
+            securityStatus.innerText = "IDENTITY VERIFIED";
+            securityStatus.style.color = "#00ff88";
             
-            if (data.status === 'unlocked') {
+            setTimeout(() => {
                 onSecuritySuccess(data.user);
-            } else {
-                securityStatus.innerText = "Fingerprint not recognized.";
-                fingerprintIcon.classList.remove('scanning');
-            }
-        } catch (err) {
-            console.error("Verification error:", err);
-            securityStatus.innerText = "Sensor Error.";
+            }, 800);
+        } else {
+            fingerprintIcon.classList.add('error');
+            securityStatus.innerText = data.message || "VERIFICATION FAILED";
+            securityStatus.style.color = "#ff4444";
         }
-    }, 1500);
+    } catch (err) {
+        console.error("Verification error:", err);
+        fingerprintIcon.classList.remove('scanning');
+        fingerprintIcon.classList.add('error');
+        securityStatus.innerText = "SENSOR DISCONNECTED";
+        securityStatus.style.color = "#ff4444";
+    }
 });
 
 function onSecuritySuccess(user) {
@@ -172,20 +207,46 @@ function onSecuritySuccess(user) {
     
     // Welcome the user with a special notification
     appendMessage('system', `<strong>Access Granted.</strong> Welcome back, ${user}!`);
+    
+    // Start auto-lock timer
+    resetInactivityTimer();
 }
 
 // Security Settings Button (Shortcut in Header)
 const securityBtn = document.getElementById('security-btn');
 if (securityBtn) {
-    securityBtn.addEventListener('click', () => {
+    securityBtn.addEventListener('click', async () => {
         const password = prompt("Enter Security Password to manage security settings:");
         if (password === "RAM@3511") {
-            appendMessage('system', "<strong>Security Settings:</strong> Logic for biometric management pending sensor driver integration.");
+            appendMessage('system', "<strong>Security Settings Access Granted.</strong> You can now manage biometric profiles.");
+            // Future logic for managing profiles
         } else if (password !== null) {
             alert("Incorrect password.");
         }
     });
 }
+
+// Session Management: Auto-Lock Logic
+let inactivityTimer;
+const INACTIVITY_LIMIT = 5 * 60 * 1000; // 5 minutes
+
+function resetInactivityTimer() {
+    if (lockScreen.classList.contains('hidden')) {
+        clearTimeout(inactivityTimer);
+        inactivityTimer = setTimeout(lockSystem, INACTIVITY_LIMIT);
+    }
+}
+
+function lockSystem() {
+    appendMessage('system', '<strong>Security:</strong> Session locked due to inactivity.');
+    lockScreen.classList.remove('hidden');
+    container.classList.add('blurred');
+}
+
+// Listen for user activity to reset timer
+['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(type => {
+    document.addEventListener(type, resetInactivityTimer, true);
+});
 
 // Contact Management
 const contactBtn = document.getElementById('contacts-btn');
@@ -297,6 +358,8 @@ async function sendInputCommand(command) {
         // Display response
         if (data.response) {
             appendMessage('system', data.response);
+            // TTS Playback
+            speakResponse(data.response);
         } else {
             appendMessage('system', "I encountered an error processing your command.");
         }
@@ -309,3 +372,92 @@ async function sendInputCommand(command) {
         }
     }
 }
+// System Pulse Dashboard Logic
+const pulseBtn = document.getElementById('pulse-btn');
+const dashboardModal = document.getElementById('dashboard-modal');
+const closeDashboard = document.getElementById('close-dashboard');
+let statsInterval;
+
+if (pulseBtn) {
+    pulseBtn.addEventListener('click', () => {
+        dashboardModal.classList.remove('hidden');
+        pulseBtn.classList.add('pulse-active');
+        startStatsPolling();
+    });
+}
+
+if (closeDashboard) {
+    closeDashboard.addEventListener('click', () => {
+        dashboardModal.classList.add('hidden');
+        pulseBtn.classList.remove('pulse-active');
+        stopStatsPolling();
+    });
+}
+
+function startStatsPolling() {
+    updateSystemStats(); // Initial call
+    statsInterval = setInterval(updateSystemStats, 3000);
+}
+
+function stopStatsPolling() {
+    clearInterval(statsInterval);
+}
+
+async function updateSystemStats() {
+    try {
+        const response = await fetch('/api/system/stats');
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+            const stats = data.stats;
+            
+            // CPU
+            document.getElementById('cpu-val').innerText = `${stats.cpu}%`;
+            document.getElementById('cpu-bar').style.width = `${stats.cpu}%`;
+            
+            // RAM
+            document.getElementById('ram-val').innerText = `${stats.ram_used} / ${stats.ram_total} GB`;
+            document.getElementById('ram-bar').style.width = `${stats.ram}%`;
+            
+            // Battery
+            if (stats.battery !== null) {
+                document.getElementById('battery-val').innerText = `${stats.battery}%`;
+                document.getElementById('battery-bar').style.width = `${stats.battery}%`;
+                const pluggedEl = document.getElementById('battery-plugged');
+                if (stats.battery_plugged) {
+                    pluggedEl.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg> CHARGING`;
+                    pluggedEl.style.color = "#00ff88";
+                } else {
+                    pluggedEl.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="16" height="10" rx="2" ry="2"></rect><line x1="22" y1="11" x2="22" y2="13"></line></svg> DISCHARGING`;
+                    pluggedEl.style.color = "rgba(255,255,255,0.5)";
+                }
+            }
+        }
+    } catch (err) {
+        console.error("Failed to fetch system stats", err);
+    }
+}
+// Help Modal Logic
+const helpBtn = document.getElementById('help-btn');
+const helpModal = document.getElementById('help-modal');
+const closeHelp = document.getElementById('close-help');
+
+if (helpBtn) {
+    helpBtn.addEventListener('click', () => {
+        helpModal.classList.remove('hidden');
+    });
+}
+
+if (closeHelp) {
+    closeHelp.addEventListener('click', () => {
+        helpModal.classList.add('hidden');
+    });
+}
+
+// Function to copy example commands to input
+window.copyCmd = function(cmd) {
+    userInput.value = cmd;
+    helpModal.classList.add('hidden');
+    userInput.focus();
+    // Optional: show a small toast or visual feedback
+};

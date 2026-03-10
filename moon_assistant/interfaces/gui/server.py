@@ -122,15 +122,17 @@ def handle_voice():
         'user_text': text_command
     })
 
+from ...core.security_manager import security_manager
+
 @app.route('/api/security/verify', methods=['POST'])
 def verify_security():
-    """Handles security verification (Fingerprint simulation or Password)."""
+    """Handles security verification (Fingerprint or Password)."""
     data = request.json
     mode = data.get('mode', 'fingerprint')
     password = data.get('password', '')
     
-    from ...core.security_manager import security_manager
-    
+    logger.info(f"GUI: Security verification requested - Mode: {mode}")
+
     if mode == 'password':
         success, user_or_message = security_manager.verify_password(password)
         if success:
@@ -138,7 +140,6 @@ def verify_security():
         else:
             return jsonify({'status': 'locked', 'message': user_or_message})
     else:
-        # Simulate fingerprint detection
         success, message = security_manager.verify_fingerprint()
         if success:
             return jsonify({'status': 'unlocked', 'user': 'Kavya'})
@@ -149,6 +150,57 @@ def verify_security():
 def add_security_face():
     # Deprecated for face, kept as stub if needed for other biometric management
     return jsonify({'status': 'error', 'message': 'Endpoint deprecated.'})
+
+@app.route('/api/system/stats', methods=['GET'])
+def get_system_stats():
+    """Returns live CPU, RAM, and Battery statistics."""
+    import psutil
+    try:
+        # psutil.cpu_percent(interval=None) can return 0 if called too quickly.
+        # We'll use a small interval or just the default behavior if polling is frequent.
+        cpu_usage = psutil.cpu_percent(interval=0.1) 
+        memory = psutil.virtual_memory()
+        battery = psutil.sensors_battery()
+        
+        stats = {
+            "cpu": cpu_usage,
+            "ram": memory.percent,
+            "ram_used": round(memory.used / (1024**3), 2),
+            "ram_total": round(memory.total / (1024**3), 2),
+            "battery": battery.percent if battery else None,
+            "battery_plugged": battery.power_plugged if battery else None
+        }
+        return jsonify({"status": "success", "stats": stats})
+    except Exception as e:
+        logger.error(f"Error fetching system stats: {e}")
+        return jsonify({"status": "error", "message": str(e)})
+@app.route('/api/voice/speak', methods=['POST'])
+def speak_voice():
+    """Generates and serves a TTS audio file for the given text."""
+    from ...core.voice_manager import speak_text_sync
+    import os
+    import time
+    
+    data = request.json
+    text = data.get('text', '')
+    if not text:
+        return jsonify({'status': 'error', 'message': 'No text provided'})
+        
+    # Temporary audio file path
+    temp_dir = os.path.join(os.path.dirname(__file__), 'static', 'audio')
+    os.makedirs(temp_dir, exist_ok=True)
+    filename = f"speech_{int(time.time())}.mp3"
+    filepath = os.path.join(temp_dir, filename)
+    
+    success = speak_text_sync(text, filepath)
+    
+    if success:
+        return jsonify({
+            'status': 'success', 
+            'url': f'/static/audio/{filename}'
+        })
+    else:
+        return jsonify({'status': 'error', 'message': 'Failed to generate speech'})
 
 def start_gui():
     from .app import start_desktop_app

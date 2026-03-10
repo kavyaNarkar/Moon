@@ -86,6 +86,92 @@
         </div>
     </div>
     
+    <!-- System Pulse Dashboard Modal -->
+    <div id="dashboard-modal" class="overlay hidden">
+        <div class="overlay-content dashboard-content">
+            <span class="moon-icon-large">📊</span>
+            <h2>System Pulse</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-label">CPU LOAD</span>
+                        <span id="cpu-val" class="stat-value">0%</span>
+                    </div>
+                    <div class="progress-bar"><div id="cpu-bar" class="fill"></div></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-label">RAM USAGE</span>
+                        <span id="ram-val" class="stat-value">0 / 0 GB</span>
+                    </div>
+                    <div class="progress-bar"><div id="ram-bar" class="fill"></div></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-label">ENERGY</span>
+                        <span id="battery-val" class="stat-value">0%</span>
+                    </div>
+                    <div class="progress-bar"><div id="battery-bar" class="fill"></div></div>
+                    <div id="battery-plugged" class="plugged-status"></div>
+                </div>
+            </div>
+            <div class="dashboard-footer">
+                <button id="close-dashboard" class="dashboard-close-btn">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                    CLOSE PULSE
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help & Commands Modal -->
+    <div id="help-modal" class="overlay hidden">
+        <div class="overlay-content help-content">
+            <span class="moon-icon-large">📖</span>
+            <h2>Moon Help Center</h2>
+            <div class="help-grid">
+                <div class="help-category">
+                    <h3>🎙️ Voice & System</h3>
+                    <ul>
+                        <li onclick="copyCmd('What is my CPU usage?')">"What is my CPU usage?"</li>
+                        <li onclick="copyCmd('How much RAM am I using?')">"How much RAM am I using?"</li>
+                        <li onclick="copyCmd('Check battery level')">"Check battery level"</li>
+                    </ul>
+                </div>
+                <div class="help-category">
+                    <h3>🌐 Web & News</h3>
+                    <ul>
+                        <li onclick="copyCmd('Latest tech news')">"Latest tech news"</li>
+                        <li onclick="copyCmd('Summarize world news')">"Summarize world news"</li>
+                        <li onclick="copyCmd('Explain Quantum Computing')">"Explain Quantum Computing"</li>
+                    </ul>
+                </div>
+                <div class="help-category">
+                    <h3>📂 Knowledge Sphere</h3>
+                    <ul>
+                        <li onclick="copyCmd('Index C:\\MOON\\moon_assistant')">"Index [Folder Path]"</li>
+                        <li onclick="copyCmd('Search my files for brain logic')">"Search my files for..."</li>
+                        <li onclick="copyCmd('Ask about my files: what is X?')">"Ask about my files..."</li>
+                    </ul>
+                </div>
+                <div class="help-category">
+                    <h3>💬 Social & Apps</h3>
+                    <ul>
+                        <li onclick="copyCmd('Send WhatsApp to Bob saying Hello')">"Send WhatsApp to [Name]..."</li>
+                        <li onclick="copyCmd('Schedule WhatsApp to Bob at 10 AM')">"Schedule WhatsApp to..."</li>
+                        <li onclick="copyCmd('Open Chrome')">"Open [App/Website]"</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button id="close-help" class="cancel-btn">Close Help</button>
+            </div>
+        </div>
+    </div>
+    
     <div class="container blurred">
         <header>
             <div class="logo">
@@ -108,11 +194,23 @@
                         <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                     </svg>
                 </button>
+                <button id="pulse-btn" class="header-btn pulse-btn" title="System Pulse Dashboard">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                    </svg>
+                </button>
                 <button id="security-btn" class="header-btn security-btn" title="Biometric Settings">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                 </button>
                 <button id="mute-btn" class="header-btn" title="Toggle Voice Output">
                     <svg id="speaker-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                </button>
+                <button id="help-btn" class="header-btn help-btn" title="Help & Commands">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
                 </button>
                 <div class="status">
                     <span class="status-dot"></span> Online
@@ -128,13 +226,25 @@
 
         <footer>
             <form id="command-form">
-                <button type="button" id="mic-btn" class="mic-btn">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
-                </button>
-                <input type="text" id="user-input" placeholder="Type a command..." autocomplete="off">
-                <button type="submit">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-                </button>
+                <div class="input-container">
+                <input type="text" id="user-input" placeholder="Say 'Hello Moon' or type a command..." autocomplete="off">
+                <div class="input-actions">
+                    <button type="button" id="mic-btn" class="mic-btn" title="Voice Command">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                            <line x1="12" y1="19" x2="12" y2="23"></line>
+                            <line x1="8" y1="23" x2="16" y2="23"></line>
+                        </svg>
+                    </button>
+                    <button type="submit" id="send-btn" class="send-btn">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </div>
+            </div>
             </form>
         </footer>
     </div>

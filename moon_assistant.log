@@ -1805,3 +1805,98 @@ python -m moon_assistant.diagnose_ollama
 2026-03-10 22:38:33,132 - Moon - INFO - MESSENGER: Waiting 30s for WhatsApp Web UI...
 2026-03-10 22:39:03,143 - Moon - INFO - MESSENGER: Executing expanded robust Esc -> Enter -> Enter sequence...
 2026-03-10 22:39:11,775 - Moon - INFO - MESSENGER: WhatsApp combined send sequence completed.
+2026-03-10 23:00:46,707 - Moon - INFO - GUI: Security verification requested - Mode: fingerprint
+2026-03-10 23:00:46,709 - Moon - INFO - SECURITY: verify_fingerprint called.
+2026-03-10 23:00:46,711 - Moon - INFO - SECURITY: Executing UserConsentVerifier.request_verification_async...
+2026-03-10 23:01:16,524 - Moon - INFO - GUI: Security verification requested - Mode: fingerprint
+2026-03-10 23:01:16,524 - Moon - INFO - SECURITY: verify_fingerprint called.
+2026-03-10 23:01:16,529 - Moon - INFO - SECURITY: Executing UserConsentVerifier.request_verification_async...
+2026-03-10 23:01:32,841 - Moon - INFO - GUI: Security verification requested - Mode: fingerprint
+2026-03-10 23:01:32,841 - Moon - INFO - SECURITY: verify_fingerprint called.
+2026-03-10 23:01:32,843 - Moon - INFO - SECURITY: Executing UserConsentVerifier.request_verification_async...
+2026-03-10 23:03:07,331 - Moon - INFO - GUI: Security verification requested - Mode: fingerprint
+2026-03-10 23:03:07,360 - Moon - INFO - SECURITY: verify_fingerprint triggering separate process...
+2026-03-10 23:03:07,369 - Moon - ERROR - SECURITY: Subprocess error - name 'os' is not defined
+2026-03-10 23:03:10,271 - Moon - INFO - GUI: Security verification requested - Mode: fingerprint
+2026-03-10 23:03:10,276 - Moon - INFO - SECURITY: verify_fingerprint triggering separate process...
+2026-03-10 23:03:10,280 - Moon - ERROR - SECURITY: Subprocess error - name 'os' is not defined
+2026-03-10 23:04:24,146 - Moon - INFO - GUI: Security verification requested - Mode: fingerprint
+2026-03-10 23:04:24,147 - Moon - INFO - SECURITY: verify_fingerprint triggering separate process...
+2026-03-10 23:04:35,521 - Moon - INFO - SECURITY: Helper process exited with code: 0
+2026-03-10 23:04:35,522 - Moon - INFO - SECURITY: Biometric Verification SUCCESS.
+2026-03-10 23:04:49,946 - Moon - INFO - GUI: Security verification requested - Mode: fingerprint
+2026-03-10 23:04:49,947 - Moon - INFO - SECURITY: verify_fingerprint triggering separate process...
+2026-03-10 23:05:05,234 - Moon - INFO - SECURITY: Helper process exited with code: 0
+2026-03-10 23:05:05,234 - Moon - INFO - SECURITY: Biometric Verification SUCCESS.
+2026-03-10 23:05:20,791 - Moon - INFO - GUI: Security verification requested - Mode: fingerprint
+2026-03-10 23:05:20,793 - Moon - INFO - SECURITY: verify_fingerprint triggering separate process...
+2026-03-10 23:05:39,267 - Moon - INFO - SECURITY: Helper process exited with code: 0
+2026-03-10 23:05:39,268 - Moon - INFO - SECURITY: Biometric Verification SUCCESS.
+2026-03-10 23:11:00,781 - Moon - INFO - GUI: Security verification requested - Mode: fingerprint
+2026-03-10 23:11:00,788 - Moon - INFO - SECURITY: verify_fingerprint triggering separate process...
+2026-03-10 23:11:17,093 - Moon - INFO - SECURITY: Helper process exited with code: 0
+2026-03-10 23:11:17,094 - Moon - INFO - SECURITY: Biometric Verification SUCCESS.
+2026-03-10 23:14:25,108 - Moon - INFO - GUI: Security verification requested - Mode: fingerprint
+2026-03-10 23:14:25,110 - Moon - INFO - SECURITY: verify_fingerprint triggering separate process...
+2026-03-10 23:14:45,897 - Moon - INFO - SECURITY: Helper process exited with code: 0
+2026-03-10 23:14:45,898 - Moon - INFO - SECURITY: Biometric Verification SUCCESS.
+2026-03-10 23:15:39,471 - Moon - INFO - Database initialized successfully.
+2026-03-10 23:16:19,133 - Moon - INFO - GUI: Security verification requested - Mode: fingerprint
+2026-03-10 23:16:19,136 - Moon - INFO - SECURITY: verify_fingerprint triggering separate process...
+2026-03-10 23:16:33,749 - Moon - INFO - SECURITY: Helper process exited with code: 0
+2026-03-10 23:16:33,749 - Moon - INFO - SECURITY: Biometric Verification SUCCESS.
+2026-03-10 23:18:45,738 - Moon - INFO - GUI: Security verification requested - Mode: fingerprint
+2026-03-10 23:18:45,744 - Moon - INFO - SECURITY: verify_fingerprint triggering separate process...
+2026-03-10 23:19:01,716 - Moon - INFO - SECURITY: Helper process exited with code: 0
+2026-03-10 23:19:01,716 - Moon - INFO - SECURITY: Biometric Verification SUCCESS.
+2026-03-10 23:19:38,744 - Moon - INFO - GUI: Security verification requested - Mode: fingerprint
+2026-03-10 23:19:38,748 - Moon - INFO - SECURITY: verify_fingerprint triggering separate process...
+2026-03-10 23:19:51,748 - Moon - INFO - SECURITY: Helper process exited with code: 0
+2026-03-10 23:19:51,750 - Moon - INFO - SECURITY: Biometric Verification SUCCESS.
+2026-03-10 23:21:51,007 - Moon - INFO - GUI: Security verification requested - Mode: fingerprint
+2026-03-10 23:21:51,013 - Moon - INFO - SECURITY: verify_fingerprint triggering separate process...
+2026-03-10 23:22:09,357 - Moon - INFO - SECURITY: Helper process exited with code: 0
+2026-03-10 23:22:09,358 - Moon - INFO - SECURITY: Biometric Verification SUCCESS.
+2026-03-10 23:23:35,048 - Moon - INFO - GUI: Security verification requested - Mode: fingerprint
+2026-03-10 23:23:35,053 - Moon - INFO - SECURITY: verify_fingerprint triggering separate process...
+2026-03-10 23:23:43,846 - Moon - INFO - SECURITY: Helper process exited with code: 0
+2026-03-10 23:23:43,847 - Moon - INFO - SECURITY: Biometric Verification SUCCESS.
+2026-03-10 23:37:14,790 - Moon - INFO - GUI: Security verification requested - Mode: fingerprint
+2026-03-10 23:37:14,793 - Moon - INFO - SECURITY: verify_fingerprint triggering separate process...
+2026-03-10 23:37:23,908 - Moon - INFO - SECURITY: Helper process exited with code: 0
+2026-03-10 23:37:23,909 - Moon - INFO - SECURITY: Biometric Verification SUCCESS.
+2026-03-10 23:37:58,743 - Moon - INFO - GUI Command: What is my CPU usage? (Muted: False)
+2026-03-10 23:37:58,748 - Moon - INFO - Generating Natural Voice: Searching the web and summarizing information abou...
+2026-03-10 23:37:58,996 - Moon - INFO - WEB_INTEL: Searching for 'what is my cpu usage?'...
+2026-03-10 23:41:59,986 - Moon - INFO - GUI: Security verification requested - Mode: fingerprint
+2026-03-10 23:41:59,987 - Moon - INFO - SECURITY: verify_fingerprint triggering separate process...
+2026-03-10 23:42:48,332 - Moon - INFO - SECURITY: Helper process exited with code: 0
+2026-03-10 23:42:48,332 - Moon - INFO - SECURITY: Biometric Verification SUCCESS.
+2026-03-10 23:43:09,560 - Moon - INFO - GUI Command: "What is my CPU usage? (Muted: False)
+2026-03-10 23:43:09,561 - Moon - DEBUG - Querying LLM: "What is my CPU usage?
+2026-03-10 23:44:10,548 - Moon - DEBUG - LLM Response text: {"task": "search_web", "message": "Please provide the specific website or tool where I can check my CPU usage."}
+2026-03-10 23:44:10,551 - Moon - INFO - Parsed task: search_web
+2026-03-10 23:44:10,553 - Moon - INFO - Generating Natural Voice: What should I search for?...
+2026-03-10 23:44:10,577 - Moon - INFO - VOICE: Generating speech for: What should I search for?...
+2026-03-10 23:44:12,607 - Moon - INFO - VOICE: Speech saved to C:\MOON\moon_assistant\interfaces\gui\static\audio\speech_1773166450.mp3
+2026-03-10 23:44:42,050 - Moon - INFO - GUI Command: india vs newzeland final (Muted: False)
+2026-03-10 23:44:42,051 - Moon - DEBUG - Querying LLM: india vs newzeland final
+2026-03-10 23:44:50,694 - Moon - DEBUG - LLM Response text: {
+  "task": "open_website",
+  "message": "Here is the link to watch India vs New Zealand final live: [insert live streaming link here]"
+}
+2026-03-10 23:44:50,695 - Moon - INFO - Parsed task: open_website
+2026-03-10 23:44:50,696 - Moon - INFO - Generating Natural Voice: No URL provided....
+2026-03-10 23:44:50,709 - Moon - INFO - VOICE: Generating speech for: No URL provided....
+2026-03-10 23:44:52,560 - Moon - INFO - VOICE: Speech saved to C:\MOON\moon_assistant\interfaces\gui\static\audio\speech_1773166490.mp3
+2026-03-10 23:45:16,154 - Moon - INFO - GUI Command: https://www.youtube.com/watch?v=ZxhE8nuUJ2I (Muted: False)
+2026-03-10 23:45:16,156 - Moon - DEBUG - Querying LLM: https://www.youtube.com/watch?v=ZxhE8nuUJ2I
+2026-03-10 23:45:28,177 - Moon - DEBUG - LLM Response text: {"task": "open_website", "message": "Opening https://www.youtube.com/watch?v=ZxhE8nuUJ2I"}
+2026-03-10 23:45:28,178 - Moon - INFO - Parsed task: open_website
+2026-03-10 23:45:28,179 - Moon - INFO - Generating Natural Voice: No URL provided....
+2026-03-10 23:45:28,191 - Moon - INFO - VOICE: Generating speech for: No URL provided....
+2026-03-10 23:45:28,948 - Moon - INFO - VOICE: Speech saved to C:\MOON\moon_assistant\interfaces\gui\static\audio\speech_1773166528.mp3
+2026-03-10 23:52:18,702 - Moon - INFO - GUI: Security verification requested - Mode: fingerprint
+2026-03-10 23:52:18,704 - Moon - INFO - SECURITY: verify_fingerprint triggering separate process...
+2026-03-10 23:52:24,094 - Moon - INFO - SECURITY: Helper process exited with code: 0
+2026-03-10 23:52:24,096 - Moon - INFO - SECURITY: Biometric Verification SUCCESS.

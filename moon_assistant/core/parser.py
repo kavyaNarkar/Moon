@@ -26,6 +26,11 @@ def quick_parse(text):
     if text in ["help", "?", "what can you do"]:
         return {"task": "help"}
 
+    # 0.5 System Stats (Pulse)
+    stats_keywords = ["cpu", "ram", "battery", "system stats", "memory usage", "pc status", "performance"]
+    if any(kw in text for kw in stats_keywords) and len(text.split()) < 6:
+        return {"task": "system_stats"}
+
     # 1. Open Application/Website
     if text.startswith("open "):
         target = text[5:].strip()
@@ -51,12 +56,36 @@ def quick_parse(text):
             return {"task": "raagini", "song": song}
         return {"task": "raagini"}
             
-    # 2. Search Web
+    # 2. Web Intelligence (Search & Summarize)
+    intelligence_keywords = ["what is", "who is", "explain", "why", "how does", "summarize news", "latest news", "tell me about"]
+    if any(text.startswith(kw) for kw in intelligence_keywords) or (text.endswith(" news") and len(text) < 30):
+        if "news" in text:
+            # Extract topic if present, e.g., "latest world news" -> "world"
+            topic = text.replace("latest", "").replace("news", "").replace("summarize", "").strip()
+            return {"task": "web_news", "topic": topic if topic else "world news"}
+        return {"task": "web_summarize", "query": text}
+
     if text.startswith("search "):
         query = text[7:].strip()
         if query.startswith("for "):
             query = query[4:].strip()
+        
+        # If the user asks to "search for" something complex, use intelligence
+        if len(query.split()) > 3 or any(kw in query for kw in ["how", "why", "who", "what"]):
+            return {"task": "web_summarize", "query": query}
         return {"task": "search_web", "query": query}
+
+    # 2.5 Knowledge Sphere (Local RAG)
+    if "index" in text or "learn from" in text:
+        # Match path: index C:\path or index "C:\path"
+        path_match = re.search(r'(?:index|learn from)\s+(?:\[|")?([a-zA-Z]:\\[^"\]]+)(?:\]|")?', text)
+        if path_match:
+            return {"task": "index_files", "path": path_match.group(1).strip()}
+            
+    if any(kw in text for kw in ["search my files", "find in my documents", "ask about my files"]):
+        query = text.replace("search my files", "").replace("find in my documents", "").replace("ask about my files", "").strip()
+        if query:
+            return {"task": "search_files", "query": query}
         
     # 3. Development Projects
     if "create" in text and ("project" in text or "app" in text):
@@ -191,11 +220,11 @@ def parse_command(llm_json, original_text=""):
             "source": llm_json.get("source", "clipboard"),
             "file_path": llm_json.get("file_path", "")
         }
-    elif task_name == "send_whatsapp":
+    elif task_name in ["web_summarize", "web_news"]:
         return {
-            "task": "send_whatsapp",
-            "phone": llm_json.get("phone", ""),
-            "message": llm_json.get("message", "")
+            "task": task_name,
+            "query": llm_json.get("query", original_text),
+            "topic": llm_json.get("topic", "world news")
         }
     
     return llm_json

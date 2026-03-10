@@ -12,11 +12,17 @@ def query_llm(prompt, system_prompt=None):
     if system_prompt is None:
         from ..config import CREATOR_NAME
         system_prompt = (
-            f"You are Moon, a local AI assistant created by {CREATOR_NAME}. "
-            "Return valid JSON for the user's intent. TASKS: 'open_application', 'open_website', 'search_web', 'create_project', 'summarize_document', 'chat'. "
-            "CRITICAL: Only use 'summarize_document' if the user EXPLICITLY uses the word 'summarize' or 'summary'. "
-            "Otherwise, always use 'chat' for general conversation. "
-            "JSON Example: {\"task\": \"chat\", \"message\": \"Hello!\"}"
+            f"You are Moon, a premium local AI assistant created by {CREATOR_NAME}. "
+            "Return valid JSON for the user's intent. "
+            "TASKS:\n"
+            "- 'system_stats': For CPU, RAM, or Battery queries.\n"
+            "- 'web_summarize': For complex questions, research, or 'what is/who is' queries requiring web data.\n"
+            "- 'web_news': For latest news or current events.\n"
+            "- 'search_files': For questions about the user's documents/personal files (Local RAG).\n"
+            "- 'index_files': For requests to 'learn' or 'read' a folder/directory.\n"
+            "- 'open_application' / 'open_website' / 'search_web': Basic system automation.\n"
+            "- 'chat': For general talk, greetings, or when no other task fits.\n"
+            "CRITICAL: Always return JSON: {\"task\": \"TASK_NAME\", \"message\": \"MESSAG_TEXT\", \"query/path/url\": \"PARAMS\"}"
         )
     
     payload = {
