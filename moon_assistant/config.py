@@ -21,6 +21,13 @@ APPLICATIONS = {
     "notepad": "notepad"
 }
 
+# Brave Browser Paths
+BRAVE_PATHS = [
+    os.path.join(os.environ.get("PROGRAMFILES", "C:\\Program Files"), "BraveSoftware\\Brave-Browser\\Application\\brave.exe"),
+    os.path.join(os.environ.get("PROGRAMFILES(X86)", "C:\\Program Files (x86)"), "BraveSoftware\\Brave-Browser\\Application\\brave.exe"),
+    os.path.join(os.environ.get("LOCALAPPDATA", ""), "BraveSoftware\\Brave-Browser\\Application\\brave.exe")
+]
+
 # Raagini Music Player Path
 RAAGINI_PATH = r"C:\Users\User\OneDrive\Apps\Raagini-v1\Raagini\build\windows\x64\runner\Release\raagini.exe"
 

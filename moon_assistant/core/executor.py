@@ -39,6 +39,14 @@ def get_response_text(command):
     elif task in ["chat", "welcome_message", "respond"]:
         return command.get("message", "I'm here to help!")
     
+    elif task == "send_whatsapp":
+        phone = command.get("phone", "")
+        message = command.get("message", "")
+        schedule_time = command.get("schedule_time", "")
+        if schedule_time:
+            return f"Scheduling WhatsApp message to {phone if phone else 'someone'} at {schedule_time}."
+        return f"Sending WhatsApp message to {phone if phone else 'someone'}."
+
     elif task == "help":
         return "Here is the help information."
     
@@ -87,6 +95,16 @@ def perform_action(command):
     elif task == "summarize_document":
         from ..tools.document_processor import summarize_document
         return summarize_document(command)
+
+    elif task == "send_whatsapp":
+        from ..tools.messenger import send_whatsapp_message, schedule_whatsapp_message
+        phone = command.get("phone", "")
+        message = command.get("message", "")
+        schedule_time = command.get("schedule_time", "")
+        
+        if schedule_time:
+            return schedule_whatsapp_message(phone, message, schedule_time)
+        return send_whatsapp_message(phone, message)
 
 def execute_task(command):
     """

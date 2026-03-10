@@ -65,6 +65,55 @@ def quick_parse(text):
             return {"task": "create_project", "framework": "react", "name": name}
         elif "flask" in text:
             return {"task": "create_project", "framework": "flask", "name": "my-flask-app"}
+    
+    # 4. WhatsApp Messaging
+    whatsapp_variants = ["whatsapp", "whatssapp", "watsapp", "watsap", "messenger"]
+    if any(v in text for v in whatsapp_variants) and ("send" in text or "message" in text):
+        import re
+        
+        # 1. Try to extract phone number (sequence of 10+ digits)
+        phone_match = re.search(r'(\d{10,15})', text)
+        phone = phone_match.group(1) if phone_match else ""
+        
+        # 2. Try to extract quoted message or message after keywords
+        message = ""
+        # Look for quotes first
+        quote_match = re.search(r'["\'\[](.*?)["\'\]]', text)
+        if quote_match:
+            message = quote_match.group(1).strip()
+        else:
+            # Fallback to splitting by common keywords
+            potential_msg = text
+            # Remove phone from search for message
+            if phone:
+                potential_msg = text.replace(phone, "").replace("to", "").strip()
+            
+            # Remove "send", "whatsapp", etc.
+            for v in whatsapp_variants + ["send", "message"]:
+                potential_msg = potential_msg.replace(v, "")
+            
+            message = potential_msg.strip()
+            
+        # 3. Schedule Time extraction (e.g., "at 5pm", "at 18:30", "tomorrow at 10:00")
+        schedule_time = ""
+        # Match "at 5:30", "at 18:00", "at 5pm"
+        time_match = re.search(r'at (\d{1,2}(?::\d{2})?\s*(?:am|pm)?)', text)
+        if time_match:
+            schedule_time = time_match.group(1).strip()
+        
+        # Fallback to "HH:MM" anywhere if no "at"
+        if not schedule_time:
+            full_time_match = re.search(r'(\d{1,2}:\d{2})', text)
+            if full_time_match:
+                schedule_time = full_time_match.group(1)
+
+        if message or phone:
+            return {
+                "task": "send_whatsapp", 
+                "phone": phone, 
+                "message": message,
+                "schedule_time": schedule_time
+            }
             
     return None
 
@@ -114,6 +163,12 @@ def parse_command(llm_json, original_text=""):
             "task": "summarize_document",
             "source": llm_json.get("source", "clipboard"),
             "file_path": llm_json.get("file_path", "")
+        }
+    elif task_name == "send_whatsapp":
+        return {
+            "task": "send_whatsapp",
+            "phone": llm_json.get("phone", ""),
+            "message": llm_json.get("message", "")
         }
     
     return llm_json
